@@ -10,6 +10,7 @@ func main(){
 	http.HandleFunc("/",serveHTTP)
   http.HandleFunc("/ls", cmdLS)
 	http.HandleFunc("/free", cmdFree)
+	http.HandleFunc("/top", cmdTop)
   http.ListenAndServe(":8080",nil)
 
 }
@@ -31,6 +32,15 @@ func cmdLS(d http.ResponseWriter,req *http.Request){
 
 func cmdFree(d http.ResponseWriter,req *http.Request){
 	c1 := exec.Command("free", "-h")
+	out, err := c1.Output()
+	d.Write(out)
+	if err != nil{
+		panic(err)
+	}
+}
+
+func cmdTop(d http.ResponseWriter, req *http.Request){
+	c1 := exec.Command("top", "-b", "-n 1")
 	out, err := c1.Output()
 	d.Write(out)
 	if err != nil{
