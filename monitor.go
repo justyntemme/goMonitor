@@ -8,10 +8,11 @@ import (
 func main(){
 
 	http.HandleFunc("/",serveHTTP)
-  http.HandleFunc("/ls", cmdLS)
+ 	http.HandleFunc("/ls", cmdLS)
 	http.HandleFunc("/free", cmdFree)
 	http.HandleFunc("/top", cmdTop)
-  http.ListenAndServe(":8080",nil)
+	http.HandleFunc("/iostat", cmdIiostat)
+  	http.ListenAndServe(":8080",nil)
 
 }
 
@@ -48,3 +49,11 @@ func cmdTop(d http.ResponseWriter, req *http.Request){
 	}
 }
 
+func cmdIostat(d http.ResponseWriter, req *http.Request){
+	c1 := exec.Command("iostat")
+	out, err := c1.Output()
+	d.Write(out)
+	if err != nil{
+	panic(err)
+	}
+}
