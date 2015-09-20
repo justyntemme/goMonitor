@@ -17,7 +17,7 @@ func main(){
 
 func serveHTTP(d http.ResponseWriter,req *http.Request){
 	d.Header().Add("Content Type", "text/html")
-	d.Write([]byte("To use a command include it in your url reques </br> Example http://localhost:8080/ls povides the output of the ls command </br> <b>Supported Commands</b> </br> ls free "))
+	d.Write([]byte("To use a command include it in your url reques </br> Example http://localhost:8080/ls povides the output of the ls command </br> <b>Supported Commands</b> </br> ls free top "))
 
 }
 
