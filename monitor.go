@@ -22,7 +22,14 @@ func serveHTTP(d http.ResponseWriter, req *http.Request) {
 	out := `
 		To use a command include it in your url reques <br>
 		Example: http://localhost:8080/ls povides the output of the ls command <br>
-		<b>Supported Commands</b>: <a href="/ls">ls</a> <a href="/free">free</a> <a href="/top">top</a> <a href="/iostat">iostat</a> <a href="/vmstat">vmstat</a>
+		<b>Supported Commands</b>: 
+		<ul>
+			<li><a href="/ls">ls</a></li>
+			<li><a href="/free">free</a></li>
+			<li><a href="/top">top</a></li>
+			<li><a href="/iostat">iostat</a></li>
+			<li><a href="/vmstat">vmstat</a></li>
+		</ul>
 	`
 	d.Write([]byte(out))
 
