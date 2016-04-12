@@ -1,0 +1,26 @@
+{{define "home"}}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ .Title }}</title>
+  <link rel="stylesheet" href="/static/stylesheets/main.css">
+</head>
+<body>
+  <h1 class="text-center">{{ .Title }}</h1>
+  <h5 class="text-center"><a href="/">Home</a></h5>
+  <div class="container">
+    To use a command include it in your url reques <br>
+    Example: http://localhost:8080/ls povides the output of the ls command <br>
+    <b>Supported Commands</b>: 
+    <ul>
+      <li><a href="/ls">ls</a></li>
+      <li><a href="/free">free</a></li>
+      <li><a href="/top">top</a></li>
+      <li><a href="/iostat">iostat</a></li>
+      <li><a href="/vmstat">vmstat</a></li>
+    </ul>
+  </div>
+</body>
+</html>
+{{end}}
