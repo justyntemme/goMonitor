@@ -1,0 +1,5 @@
+#!/bin/bash
+#this is a script to start an instance of chromium with the --app flag in which the browser looks at the web page as 
+#an app instead of a full address. allows for desktop like application building
+
+chromium --app=http://localhost:8080
