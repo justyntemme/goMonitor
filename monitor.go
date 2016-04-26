@@ -60,7 +60,7 @@ func cmdLS(d http.ResponseWriter, req *http.Request) {
 		
 		fmt.Println(arg)
 	}
-	c1 := exec.Command("ls", string(arg))
+	c1 := exec.Command("ls", arg)
 	out, err := c1.Output()
 	if err != nil {
 		panic(err)}
@@ -68,7 +68,23 @@ func cmdLS(d http.ResponseWriter, req *http.Request) {
 }
 
 func cmdFree(d http.ResponseWriter, req *http.Request) {
-	c1 := exec.Command("free", "")
+	var arg string = "--help"
+	if (req.Method == "POST"){
+		req.ParseForm()
+		fmt.Println(req.Form["arg"])
+		if req.Form["arg"][0] != ""{
+			arg=""
+			for i:= 0; i < len(req.Form["arg"]); i++{
+				arg +=(req.Form["arg"][i])
+				strings.Replace(arg, "[", "", -1)
+				strings.Replace(arg, "]", "", -1)
+			}
+		}else {
+			arg = "--help"
+			}
+		fmt.Println(arg)
+	}	
+	c1 := exec.Command("free", arg)
 	out, err := c1.Output()
 	if err != nil {
 		panic(err)
