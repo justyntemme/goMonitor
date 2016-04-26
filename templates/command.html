@@ -9,6 +9,9 @@
 </head>
 <body>
   <h1 class="text-center">{{ .Title }}</h1>
+  <form action={{ .Title }} method="POST">
+	arg:<input type="text" name="arg">
+	<input type="submit" value="execute">
   <h5 class="text-center"><a href="/">Home</a></h5>
   <div class="container command">
 {{ .Body }}
