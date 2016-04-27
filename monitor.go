@@ -65,7 +65,7 @@ func cmdLS(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("ls", arg)
 	out, err := c1.Output()
 	if err != nil {
-		panic_my_way(err,d)
+		panicMyway(err,d)
 		return
 	}
 	serveTemplate(d, &Page{Title: "Command: ls", Body: string(out), Type: "command"})
@@ -91,7 +91,7 @@ func cmdFree(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("free", arg)
 	out, err := c1.Output()
 	if err != nil {
-		panic_my_way(err, d)
+		panicMyway(err, d)
 		return
 	}
 	serveTemplate(d, &Page{Title: "Command: free", Body: string(out), Type: "command"})
@@ -101,7 +101,7 @@ func cmdTop(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("top", "-b", "-n1")
 	out, err := c1.Output()
 	if err != nil {
-		panic_my_way(err, d)
+		panicMyway(err, d)
 		return
 	}
 	serveTemplate(d, &Page{Title: "Command: top", Body: string(out), Type: "command"})
@@ -119,7 +119,7 @@ func cmdDmesg(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("dmesg")
 	out, err := c1.Output()
 	if err != nil {
-		panic_my_way(err, d)
+		panicMyway(err, d)
 		return
 	}
 	serveTemplate(d, &Page{Title: "Command: dmesg", Body: string(out), Type: "command"})
@@ -128,13 +128,13 @@ func cmdVmstat(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("vmstat")
 	out, err := c1.Output()
 	if err != nil {
-		panic_my_way(err, d)
+		panicMyway(err, d)
 		return
 	}
 	serveTemplate(d, &Page{Title: "Command: vmstat", Body: string(out), Type: "command"})
 }
 
-func panic_my_way(err error, d http.ResponseWriter) {
+func panicMyway(err error, d http.ResponseWriter) {
 
 	log.Print(err)
 	status := http.StatusInternalServerError
