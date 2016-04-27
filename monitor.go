@@ -12,6 +12,7 @@ type Page struct {
 	Title string
 	Body  string
 	Type  string
+	
 }
 
 func main() {
@@ -19,6 +20,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/",serveHTTP)
 	http.HandleFunc("/ls",cmdLS)
+	http.HandleFunc("/dmesg",cmdDmesg)
 	http.HandleFunc("/vmstat",cmdVmstat)
 	http.HandleFunc("/free",cmdFree)
 	http.HandleFunc("/top",cmdTop)
@@ -109,7 +111,14 @@ func cmdIostat(d http.ResponseWriter, req *http.Request) {
 	}
 	serveTemplate(d, &Page{Title: "Command: iostat", Body: string(out), Type: "command"})
 }
-
+func cmdDmesg(d http.ResponseWriter, req*http.Request) {
+	c1 := exec.Command("dmesg")
+	out, err := c1.Output()
+	if err != nil {
+		panic(err)
+	}
+	serveTemplate(d, &Page{Title: "Command: dmesg", Body: string(out), Type: "command"})
+}
 func cmdVmstat(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("vmstat")
 	out, err := c1.Output()
