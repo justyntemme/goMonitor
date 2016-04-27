@@ -1,30 +1,29 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
-	"strings"
 	"os/exec"
-	"fmt"
+	"strings"
 )
 
 type Page struct {
 	Title string
 	Body  string
 	Type  string
-	
 }
 
 func main() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.HandleFunc("/",serveHTTP)
-	http.HandleFunc("/ls",cmdLS)
-	http.HandleFunc("/dmesg",cmdDmesg)
-	http.HandleFunc("/vmstat",cmdVmstat)
-	http.HandleFunc("/free",cmdFree)
-	http.HandleFunc("/top",cmdTop)
-	http.HandleFunc("/iostat",cmdIostat)
+	http.HandleFunc("/", serveHTTP)
+	http.HandleFunc("/ls", cmdLS)
+	http.HandleFunc("/dmesg", cmdDmesg)
+	http.HandleFunc("/vmstat", cmdVmstat)
+	http.HandleFunc("/free", cmdFree)
+	http.HandleFunc("/top", cmdTop)
+	http.HandleFunc("/iostat", cmdIostat)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -46,46 +45,47 @@ func serveHTTP(d http.ResponseWriter, req *http.Request) {
 
 func cmdLS(d http.ResponseWriter, req *http.Request) {
 	var arg string = "--help"
-	if (req.Method == "POST"){
+	if req.Method == "POST" {
 		req.ParseForm()
 		fmt.Println(req.Form["arg"])
-		if req.Form["arg"][0] != ""{
-			arg=""
-			for i := 0; i < len(req.Form["arg"]); i++{
-				arg +=(req.Form["arg"][i])
+		if req.Form["arg"][0] != "" {
+			arg = ""
+			for i := 0; i < len(req.Form["arg"]); i++ {
+				arg += (req.Form["arg"][i])
 				strings.Replace(arg, "[", "", -1)
 				strings.Replace(arg, "]", "", -1)
 			}
-}		 else {	
-					arg= "--help"
-				}
-		
+		} else {
+			arg = "--help"
+		}
+
 		fmt.Println(arg)
 	}
 	c1 := exec.Command("ls", arg)
 	out, err := c1.Output()
 	if err != nil {
-		panic(err)}
+		panic(err)
+	}
 	serveTemplate(d, &Page{Title: "Command: ls", Body: string(out), Type: "command"})
 }
 
 func cmdFree(d http.ResponseWriter, req *http.Request) {
 	var arg string = "--help"
-	if (req.Method == "POST"){
+	if req.Method == "POST" {
 		req.ParseForm()
 		fmt.Println(req.Form["arg"])
-		if req.Form["arg"][0] != ""{
-			arg=""
-			for i:= 0; i < len(req.Form["arg"]); i++{
-				arg +=(req.Form["arg"][i])
+		if req.Form["arg"][0] != "" {
+			arg = ""
+			for i := 0; i < len(req.Form["arg"]); i++ {
+				arg += (req.Form["arg"][i])
 				strings.Replace(arg, "[", "", -1)
 				strings.Replace(arg, "]", "", -1)
 			}
-		}else {
+		} else {
 			arg = "--help"
-			}
+		}
 		fmt.Println(arg)
-	}	
+	}
 	c1 := exec.Command("free", arg)
 	out, err := c1.Output()
 	if err != nil {
@@ -111,7 +111,7 @@ func cmdIostat(d http.ResponseWriter, req *http.Request) {
 	}
 	serveTemplate(d, &Page{Title: "Command: iostat", Body: string(out), Type: "command"})
 }
-func cmdDmesg(d http.ResponseWriter, req*http.Request) {
+func cmdDmesg(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("dmesg")
 	out, err := c1.Output()
 	if err != nil {
