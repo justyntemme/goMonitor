@@ -1,6 +1,5 @@
 package main
 
-//TODO today: add man page support on each command
 import (
 	"fmt"
 	"html/template"
