@@ -4,10 +4,10 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"os/exec"
 	"strings"
-	"log"
 )
 
 type Page struct {
@@ -62,12 +62,12 @@ func serveTemplate(d http.ResponseWriter, page *Page) {
 	var file string
 	if page.Type == "home" {
 		file = "home"
-	} else if page.Type=="command" {
+	} else if page.Type == "command" {
 		file = "command"
 	} else if page.Type == "man" {
 		file = "man"
 	}
-	tmpl, _ := template.ParseFiles("templates/home.html", "templates/command.html","templates/man.html")
+	tmpl, _ := template.ParseFiles("templates/home.html", "templates/command.html", "templates/man.html")
 	tmpl.ExecuteTemplate(d, file, page)
 }
 
@@ -96,7 +96,7 @@ func cmdLS(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("ls", arg)
 	out, err := c1.Output()
 	if err != nil {
-		panicMyway(err,d)
+		panicMyway(err, d)
 		return
 	}
 	serveTemplate(d, &Page{Title: "Command: ls", Body: string(out), Type: "command"})
@@ -142,10 +142,11 @@ func cmdPs(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("ps")
 	out, err := c1.Output()
 	if err != nil {
-		panicMyway(err,d)
+		panicMyway(err, d)
 		return
 	}
-	serveTemplate(d, &Page{Title: "Command: ps", Body: string(out), Type: "command"})}
+	serveTemplate(d, &Page{Title: "Command: ps", Body: string(out), Type: "command"})
+}
 
 func cmdIostat(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("iostat")
