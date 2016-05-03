@@ -1,0 +1,21 @@
+{{ define "man"}}
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{{ .Title }}</title>
+	<link rel="stylesheet" href="/static/stylesheets/main.css">
+</head>
+<body>
+	<h1 class="text-center">{{ .Title }}</h1>
+	<div class="container text-center">
+		Type a command to receive the full manpage for the command
+	</div>
+	<div class="text-center"><form action="man" method="POST">
+					<input type="text" name="arg">
+					<input type="submit" value="Go">
+	</div>
+	<div class="container">{{ .Body }}</div>
+</body>
+</html>
+{{end}}
