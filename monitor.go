@@ -20,6 +20,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", serveHTTP)
 	http.HandleFunc("/ls", cmdLS)
+	http.HandleFunc("/ps", cmdPs)
 	http.HandleFunc("/dmesg", cmdDmesg)
 	http.HandleFunc("/vmstat", cmdVmstat)
 	http.HandleFunc("/free", cmdFree)
@@ -106,6 +107,15 @@ func cmdTop(d http.ResponseWriter, req *http.Request) {
 	}
 	serveTemplate(d, &Page{Title: "Command: top", Body: string(out), Type: "command"})
 }
+
+func cmdPs(d http.ResponseWriter, req *http.Request) {
+	c1 := exec.Command("ps")
+	out, err := c1.Output()
+	if err != nil {
+		panicMyway(err,d)
+		return
+	}
+	serveTemplate(d, &Page{Title: "Command: ps", Body: string(out), Type: "command"})}
 
 func cmdIostat(d http.ResponseWriter, req *http.Request) {
 	c1 := exec.Command("iostat")
