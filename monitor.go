@@ -53,7 +53,6 @@ func man(d http.ResponseWriter, req *http.Request) {
 	}
 	if err != nil {
 		panicMyway(err, d)
-		return
 	}
 	serveTemplate(d, &Page{Title: "Manpages", Body: string(out), Type: "man"})
 }
@@ -97,7 +96,6 @@ func cmdLS(d http.ResponseWriter, req *http.Request) {
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
-		return
 	}
 	serveTemplate(d, &Page{Title: "Command: ls", Body: string(out), Type: "command"})
 }
@@ -123,7 +121,6 @@ func cmdFree(d http.ResponseWriter, req *http.Request) {
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
-		return
 	}
 	serveTemplate(d, &Page{Title: "Command: free", Body: string(out), Type: "command"})
 }
@@ -133,7 +130,6 @@ func cmdTop(d http.ResponseWriter, req *http.Request) {
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
-		return
 	}
 	serveTemplate(d, &Page{Title: "Command: top", Body: string(out), Type: "command"})
 }
@@ -143,7 +139,6 @@ func cmdPs(d http.ResponseWriter, req *http.Request) {
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
-		return
 	}
 	serveTemplate(d, &Page{Title: "Command: ps", Body: string(out), Type: "command"})
 }
@@ -161,7 +156,6 @@ func cmdDmesg(d http.ResponseWriter, req *http.Request) {
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
-		return
 	}
 	serveTemplate(d, &Page{Title: "Command: dmesg", Body: string(out), Type: "command"})
 }
@@ -170,7 +164,6 @@ func cmdVmstat(d http.ResponseWriter, req *http.Request) {
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
-		return
 	}
 	serveTemplate(d, &Page{Title: "Command: vmstat", Body: string(out), Type: "command"})
 }
