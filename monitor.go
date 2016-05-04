@@ -75,6 +75,7 @@ func serveHTTP(d http.ResponseWriter, req *http.Request) {
 
 func cmdLS(d http.ResponseWriter, req *http.Request) {
 	var arg string = "--help"
+	var args []string
 	if req.Method == "POST" {
 		req.ParseForm()
 		fmt.Println(req.Form["arg"])
@@ -88,10 +89,10 @@ func cmdLS(d http.ResponseWriter, req *http.Request) {
 		} else {
 			arg = "--help"
 		}
-
-		fmt.Println(arg)
+		fmt.Println(req.Form["arg"][0])
 	}
-	c1 := exec.Command("ls", arg)
+	args = strings.Split(arg, " ")
+	c1 := exec.Command("ls",args...)
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
