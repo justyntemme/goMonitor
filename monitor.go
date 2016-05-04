@@ -32,6 +32,7 @@ func main() {
 
 func man(d http.ResponseWriter, req *http.Request) {
 	var arg string
+	var args []string
 	c1 := exec.Command("man", "man")
 	out, err := c1.Output()
 	if req.Method == "POST" {
@@ -45,9 +46,8 @@ func man(d http.ResponseWriter, req *http.Request) {
 				strings.Replace(arg, "]", "", -1)
 			}
 		}
-
-		fmt.Println("argument")
-		c1 = exec.Command("man", arg)
+		args = strings.Split(arg, " ")
+		c1 = exec.Command("man", args...)
 		out, err = c1.Output()
 	}
 	if err != nil {
@@ -102,6 +102,7 @@ func cmdLS(d http.ResponseWriter, req *http.Request) {
 
 func cmdFree(d http.ResponseWriter, req *http.Request) {
 	var arg string = "--help"
+	var args []string
 	if req.Method == "POST" {
 		req.ParseForm()
 		fmt.Println(req.Form["arg"])
@@ -117,7 +118,8 @@ func cmdFree(d http.ResponseWriter, req *http.Request) {
 		}
 		fmt.Println(arg)
 	}
-	c1 := exec.Command("free", arg)
+	args = strings.Split(arg," ")
+	c1 := exec.Command("free", args...)
 	out, err := c1.Output()
 	if err != nil {
 		panicMyway(err, d)
