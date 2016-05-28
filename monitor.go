@@ -12,14 +12,6 @@ This program is free software: you can redistribute it and/or modify
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
-
-
-
-
-
 */
 package main
 
@@ -47,10 +39,22 @@ func main() {
 	http.HandleFunc("/man", man)
 	http.HandleFunc("/dmesg", cmdDmesg)
 	http.HandleFunc("/vmstat", cmdVmstat)
+	http.HandleFunc("/chupdate", cmdChupdate)
 	http.HandleFunc("/free", cmdFree)
 	http.HandleFunc("/top", cmdTop)
 	http.HandleFunc("/iostat", cmdIostat)
 	http.ListenAndServe(":8080", nil)
+}
+
+func cmdChupdate(d http.ResponseWriter, req *http.Request) {
+	c1 := exec.Command("/usr/bin/zypper","lp")
+	out, err := c1.Output()
+	if err != nil {
+	panicMyway(err, d)
+	}
+	serveTemplate(d, &Page{Title: "Package Update List", Body: string(out), Type: "chupdate"})
+
+
 }
 
 func man(d http.ResponseWriter, req *http.Request) {
@@ -87,8 +91,10 @@ func serveTemplate(d http.ResponseWriter, page *Page) {
 		file = "command"
 	} else if page.Type == "man" {
 		file = "man"
+	} else if page.Type == "chupdate" {
+		file = "chupdate"
 	}
-	tmpl, _ := template.ParseFiles("templates/home.html", "templates/command.html", "templates/man.html")
+	tmpl, _ := template.ParseFiles("templates/home.html", "templates/command.html", "templates/man.html", "templates/chupdate.html")
 	tmpl.ExecuteTemplate(d, file, page)
 }
 
