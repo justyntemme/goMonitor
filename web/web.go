@@ -13,6 +13,9 @@ type Page struct {
 	Title string
 	Body  string
 	Type  string
+	Data1 string
+	Data2 string
+	Data3 string
 }
 
 func panicMyway(err error, d http.ResponseWriter) {
@@ -28,6 +31,7 @@ func StartServer() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", serveHTTP)
+	http.HandleFunc("/docker", docker)
 	http.HandleFunc("/ls", cmdLS)
 	http.HandleFunc("/ps", cmdPs)
 	http.HandleFunc("/man", man)
@@ -41,7 +45,13 @@ func StartServer() {
 }
 
 func docker(d http.ResponseWriter, req *http.Request) {
-
+	c1 := exec.Command("ls") //work on sudo shit
+	stats, err := c1.Output()
+	log.Print(string(stats))
+	if err != nil {
+		panicMyway(err, d)
+	}
+	serveTemplate(d, &Page{Title: "Docker Containers", Body: string("Hello!"), Type: "docker"})
 }
 func man(d http.ResponseWriter, req *http.Request) {
 	var arg string
@@ -78,8 +88,10 @@ func serveTemplate(d http.ResponseWriter, page *Page) {
 		file = "command"
 	} else if page.Type == "man" {
 		file = "man"
+	} else if page.Type == "docker" {
+		file = "docker"
 	}
-	tmpl, _ := template.ParseFiles("templates/home.html", "templates/command.html", "templates/man.html")
+	tmpl, _ := template.ParseFiles("templates/home.html", "templates/command.html", "templates/man.html", "templates/docker.html")
 	tmpl.ExecuteTemplate(d, file, page)
 }
 
