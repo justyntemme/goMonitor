@@ -45,13 +45,20 @@ func StartServer() {
 }
 
 func docker(d http.ResponseWriter, req *http.Request) {
-	c1 := exec.Command("ls") //work on sudo shit
-	stats, err := c1.Output()
+	c1 := exec.Command("docker", "ps") //work on sudo shit
+	ps, err := c1.Output()
+	log.Print(string(ps))
+	if err != nil {
+		panicMyway(err, d)
+	}
+	c2 := exec.Command("docker", "stats")
+	stats, err := c2.Output()
 	log.Print(string(stats))
 	if err != nil {
 		panicMyway(err, d)
 	}
-	serveTemplate(d, &Page{Title: "Docker Containers", Body: string("Hello!"), Type: "docker"})
+
+	serveTemplate(d, &Page{Title: "Docker Containers", Data1: string(ps), Data2: string(stats), Type: "docker"})
 }
 func man(d http.ResponseWriter, req *http.Request) {
 	var arg string
